@@ -16,9 +16,9 @@ class ITareaRepository(ABC):
         pass
 
     @abstractmethod
-    def actualizar_tarea(self, id_tarea:int) -> TareaEntity | None:
+    def actualizar_tarea(self, id_tarea:int, tarea: TareaEntity) -> TareaEntity | None:
         pass
 
     @abstractmethod
-    def eliminar_tarea(self, id_tarea:int) -> None:
+    def eliminar_tarea(self, id_tarea:int) -> bool:
         pass

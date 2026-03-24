@@ -36,6 +36,16 @@ class JsonRepository(ITareaRepository):
         except IndexError:
             return 1
 
+    
+    def __obtener_index_tarea(self, id_tarea):
+        db = self.__obtener_db()
+        for i, tarea_db in enumerate(db):
+            if tarea_db["id"] == id_tarea:
+                return i
+
+
+
+
 
     def crear_tarea(self, tarea: TareaEntity) -> None:
         db = self.__obtener_db()
@@ -65,12 +75,29 @@ class JsonRepository(ITareaRepository):
         return None
 
 
-    def actualizar_tarea(self, id_tarea: int) -> TareaEntity | None:
-        pass
+    def actualizar_tarea(self, id_tarea: int, tarea: TareaEntity) -> TareaEntity | None:
+        db = self.__obtener_db()
+
+        index_tarea_db = self.__obtener_index_tarea(id_tarea)
+        #Nota para mi, no tengo que validar aqui la existencia del tarea en la db porque ya lo esta haciendo el use case
+
+        db[index_tarea_db] = {"id": tarea.id, "titulo": tarea.titulo, "descripcion": tarea.descripcion, "completado": tarea.completado}
+
+        self.__escribir_db(db)
+        return tarea
 
 
-    def eliminar_tarea(self, id_tarea: int) -> None:
-        pass
+
+
+    def eliminar_tarea(self, id_tarea: int) -> bool:
+        db = self.__obtener_db()
+
+        index_tarea_db = self.__obtener_index_tarea(id_tarea)
+        db.pop(index_tarea_db)
+        self.__escribir_db(db)
+
+        return True
+
 
 
 json_repository = JsonRepository()
