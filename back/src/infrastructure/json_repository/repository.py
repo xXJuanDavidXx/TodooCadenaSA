@@ -45,8 +45,6 @@ class JsonRepository(ITareaRepository):
 
 
 
-
-
     def crear_tarea(self, tarea: TareaEntity) -> None:
         db = self.__obtener_db()
         tarea_id = self.__generar_id()

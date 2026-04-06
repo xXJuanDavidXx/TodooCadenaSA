@@ -5,7 +5,7 @@ from src.application.use_cases.obtener_tarea_usecase import ObtenerTareaUseCase
 from src.application.use_cases.actualizar_tarea_usecase import ActualizarTareaUseCase
 from src.application.use_cases.eliminar_tarea_usecase import EliminarTareaUseCase
 from src.application.DTOs.tarea_dto import CrearTareaDTO, ActualizarTareaDTO
-from src.infrastructure.repository import json_repository
+from src.infrastructure.json_repository.repository import json_repository
 from src.interface.controllers.validaciones import validar_datos_actualizar, validar_datos_crear
 from dataclasses import asdict # este ijuemadre me sirve de DTO
 

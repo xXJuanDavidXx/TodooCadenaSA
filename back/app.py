@@ -1,5 +1,5 @@
 from flask import Flask
-from src.infrastructure.repository import db_init
+from src.infrastructure.json_repository.repository import db_init
 from src.interface.routers.v1.tareas_router import tarea_bp
 
 db_init()
