@@ -1,8 +1,14 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 
 
 export default function Nav(){
+
+
+    const location = useLocation();
+
+    const claseActiva = "rounded-md bg-gray-950/50 px-3 py-2 text-sm font-medium text-white";
+    const claseInactiva = "rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white";
 
   
   return( 
@@ -27,9 +33,8 @@ export default function Nav(){
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4 justify-end">
                   {/* Current: "bg-gray-950/50 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" */}
-                  <Link to="/" className="rounded-md bg-gray-950/50 px-3 py-2 text-sm font-medium text-white">Home</Link>
-                  <Link to="/crear" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Nueva Tarea</Link>          
-
+                  <Link to="/" className={location.pathname === "/" ? claseActiva : claseInactiva}>Tareas</Link>
+                  <Link to="/crear" className={location.pathname === "/crear" ? claseActiva : claseInactiva}>Nueva Tarea</Link>          
                 </div>
               </div>
             </div>
@@ -38,15 +43,11 @@ export default function Nav(){
           </div>
         </div>
         <el-disclosure id="mobile-menu" hidden="" className="block sm:hidden">
-          <div className="space-y-1 px-2 pt-2 pb-3">
+          <div className="space-y-1 px-2 pt-2 pb-3 ">
             {/* Current: "bg-gray-950/50 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" */}
-            <a
-              href="#"
-              aria-current="page"
-              className="block rounded-md bg-gray-950/50 px-3 py-2 text-base font-medium text-white"
-            >
-              Dashboard
-            </a>
+            <Link to="/" className={location.pathname === "/" ? claseActiva : claseInactiva}>Tareas</Link>
+    
+            <Link to="/crear" className={location.pathname === "/crear" ? claseActiva : claseInactiva}>Nueva Tarea</Link>          
           </div>
         </el-disclosure>
       </nav>

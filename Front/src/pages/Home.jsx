@@ -1,12 +1,13 @@
 import { useTareas } from '../hooks/useTareas'
-import Card from '../components/Card/Card' 
+import Card from '../components/Card/Card'
+import { useNavigate } from 'react-router-dom'
 
 
 export default function Home(){
 
-  const {tareas, loading, error, agregarNuevatarea, editarTarea, eliminar} = useTareas() 
+  const {tareas, loading, error, editarTarea, eliminar} = useTareas() 
   // Ya desestructuradas las tareas| 
-
+  const navigate = useNavigate()
 
   const toggleTask = async (tarea) => {
     await editarTarea(tarea.id, { completado: !tarea.completado})
@@ -14,6 +15,11 @@ export default function Home(){
 
 
   const onDelete = async (tarea) => {
+
+    const confirmado = window.confirm(`¿Estás seguro de eliminar "${tarea.titulo}"?`)
+    
+    if (!confirmado) return;
+
     await eliminar(tarea.id)
   }
 
@@ -21,7 +27,11 @@ export default function Home(){
     
     <main className="p-8 bg-gray-50 min-h-screen">
       
-      {loading && <div className="text-center text-blue-500 font-bold p-10"><p>Cargando tareas... </p></div>}
+      {loading && <div className="flex items-center justify-center gap-2 min-h-[50vh]">
+      <span className="size-3 animate-pulse rounded-full bg-indigo-600" />
+      <span className="size-3 animate-pulse rounded-full bg-indigo-600 [animation-delay:0.2s]" />
+      <span className="size-3 animate-pulse rounded-full bg-indigo-600 [animation-delay:0.4s]" />
+    </div>}
       
 
       {error && <div className="text-center text-red-500 font-bold p-10"><p>Ocurrio un error: {error} </p></div>}
@@ -40,7 +50,8 @@ export default function Home(){
           descripcion={tarea.descripcion}
           isCompleted={tarea.completado}
           onToggle={() => toggleTask(tarea)}
-          onDelete={() => onDelete(tarea)}  
+          onDelete={() => onDelete(tarea)}
+          onEdit={() => navigate(`/editar/${tarea.id}`)}
 
         />
 
