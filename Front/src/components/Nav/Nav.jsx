@@ -30,9 +30,12 @@ export default function Nav(){
                   className="h-8 w-auto"
                 />
               </div>
+              
+          
+
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4 justify-end">
-                  {/* Current: "bg-gray-950/50 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" */}
+                
                   <Link to="/" className={location.pathname === "/" ? claseActiva : claseInactiva}>Tareas</Link>
                   <Link to="/crear" className={location.pathname === "/crear" ? claseActiva : claseInactiva}>Nueva Tarea</Link>          
                 </div>
@@ -44,7 +47,7 @@ export default function Nav(){
         </div>
         <el-disclosure id="mobile-menu" hidden="" className="block sm:hidden">
           <div className="space-y-1 px-2 pt-2 pb-3 ">
-            {/* Current: "bg-gray-950/50 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" */}
+
             <Link to="/" className={location.pathname === "/" ? claseActiva : claseInactiva}>Tareas</Link>
     
             <Link to="/crear" className={location.pathname === "/crear" ? claseActiva : claseInactiva}>Nueva Tarea</Link>          

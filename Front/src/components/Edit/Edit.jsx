@@ -6,13 +6,13 @@ import { getTareabyId } from "../../services/tareasService"
 
 export default function Edit(){
     
-    const {id} = useParams();
-    const navigate = useNavigate();
-    const { editarTarea } = useTareas(); 
+    const {id} = useParams()
+    const navigate = useNavigate()
+    const { editarTarea } = useTareas() 
 
 
-    const [titulo, setTitulo] = useState("");
-    const [descripcion, setDescripcion] = useState("");
+    const [titulo, setTitulo] = useState("")
+    const [descripcion, setDescripcion] = useState("")
     const [cargando, setCargando] = useState(true)  
 
 
@@ -36,7 +36,7 @@ export default function Edit(){
     }, [id]) //DEPENDEMOS COMPLETAMENTE DEL ID
 
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => { // MAnejamos el submit
     e.preventDefault();
       
     if (!titulo.trim()) return;
@@ -69,6 +69,7 @@ export default function Edit(){
                   type="text"
                   id="titulo"
                   placeholder="¿Qué hay que hacer?"
+                  maxLength={50} 
                   value={titulo}
                   onChange={(e) => setTitulo(e.target.value)}
                   className="mt-2 w-full border-2 border-black bg-white px-4 py-3 text-black transition-all placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black sm:text-sm"
@@ -82,6 +83,7 @@ export default function Edit(){
                 <textarea
                   id="descripcion"
                   placeholder="Detalles de la tarea..."
+                  maxLength={500}
                   value={descripcion}
                   className="mt-2 w-full resize-none border-2 border-black bg-white px-4 py-3 text-black transition-all placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black sm:text-sm"
                   rows={4}

@@ -37,6 +37,7 @@ export default function Form(){
                   type="text"
                   id="titulo"
                   placeholder="¿Qué hay que hacer?"
+                  maxLength={50}
                   value={titulo}
                   onChange={(e) => setTitulo(e.target.value)}
                   className="mt-2 w-full border-2 border-black bg-white px-4 py-3 text-black transition-all placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black sm:text-sm"
@@ -50,6 +51,7 @@ export default function Form(){
                 <textarea
                   id="descripcion"
                   placeholder="Detalles de la tarea..."
+                  maxLength={500}
                   value={descripcion}
                   className="mt-2 w-full resize-none border-2 border-black bg-white px-4 py-3 text-black transition-all placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black sm:text-sm"
                   rows={4}

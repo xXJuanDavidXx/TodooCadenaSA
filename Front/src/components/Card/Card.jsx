@@ -6,7 +6,7 @@ export default function Card({ id, titulo, descripcion, isCompleted, onToggle, o
 
   return(
     <>
-      <article className="group relative flex items-start gap-4 rounded-xl border-2 border-black bg-white p-6 shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
+      <article className="h-48 group relative flex items-start gap-4 rounded-xl border-2 border-black bg-white p-6 shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
         {/* Estado / Checkbox */}
         <div className="flex h-6 items-center">
           <input
@@ -20,7 +20,7 @@ export default function Card({ id, titulo, descripcion, isCompleted, onToggle, o
 
         {/* Contenido */}
         <div className="flex-1 min-w-0">
-          <h4 className={`text-lg font-bold uppercase tracking-tight transition-colors ${isCompleted ? 'text-gray-400 line-through' : 'text-black'}`}>
+          <h4 className={`break-words  text-lg font-bold uppercase tracking-tight transition-colors ${isCompleted ? 'text-gray-400 line-through' : 'text-black'}`}>
             {titulo || 'Nueva Tarea'}
           </h4>
           {descripcion && (

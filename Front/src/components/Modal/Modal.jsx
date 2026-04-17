@@ -1,4 +1,3 @@
-import React from 'react';
 
 export default function Modal({ isOpen, onClose, title, children, onToggle, onDelete, isCompleted, id }) {
   if (!isOpen) return null; // Si todavia no es true no haga nada porfavor... gracias.
@@ -49,7 +48,7 @@ export default function Modal({ isOpen, onClose, title, children, onToggle, onDe
           </div>
         </div>
 
-        <div className="p-8 max-h-[60vh] overflow-y-auto text-black font-medium leading-relaxed bg-white">
+        <div className="p-8 max-h-[60vh] overflow-y-auto text-black font-medium leading-relaxed bg-white break-words">
           {children}
         </div>
 
