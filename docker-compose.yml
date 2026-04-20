@@ -1,0 +1,44 @@
+services:
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "${MYSQL_HOST_PORT:-3307}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-tareas_db}
+      MYSQL_USER: ${MYSQL_USER:-tareas_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-tareas_pass}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+  back:
+    build: ./back
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./back:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=${MYSQL_USER:-tareas_user}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-tareas_pass}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-tareas_db}
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  front:
+    build: ./front
+    ports:
+      - "80:80"
+    depends_on:
+      - back
+
+volumes:
+  mysql_data:

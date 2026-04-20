@@ -5,7 +5,7 @@ from src.application.use_cases.obtener_tarea_usecase import ObtenerTareaUseCase
 from src.application.use_cases.actualizar_tarea_usecase import ActualizarTareaUseCase
 from src.application.use_cases.eliminar_tarea_usecase import EliminarTareaUseCase
 from src.application.DTOs.tarea_dto import CrearTareaDTO, ActualizarTareaDTO
-from src.infrastructure.json_repository.repository import json_repository
+from src.infrastructure.sql_repository.repository import sql_repository
 from src.interface.controllers.validaciones import validar_datos_actualizar, validar_datos_crear
 from dataclasses import asdict # este ijuemadre me sirve de DTO
 
@@ -32,13 +32,13 @@ def crear_obtener_tareas():
         ########EFECTUAMOS GUARDADO EN DB###############
 
         tarea_dto = CrearTareaDTO(**datos_request)
-        crear_tarea_uc = CrearTareaUseCase(json_repository) #7w7 lo lindo de depender de abstracciones
+        crear_tarea_uc = CrearTareaUseCase(sql_repository) #7w7 lo lindo de depender de abstracciones
         crear_tarea_uc.ejecutar(tarea_dto)
         res = {"mensaje": "OK"}
         return jsonify(res), 201
 
     ###GET###
-    obtener_tareas_uc = ObtenerTareasUseCase(json_repository)
+    obtener_tareas_uc = ObtenerTareasUseCase(sql_repository)
     tareas = obtener_tareas_uc.ejecutar()
     dict_tareas = [asdict(t) for t in tareas]
 
@@ -68,7 +68,7 @@ def obtener_actualizar_eliminar_tarea(id):
 
         tarea_dto = ActualizarTareaDTO(**data_request)
 
-        actualizar_tarea_uc = ActualizarTareaUseCase(json_repository)
+        actualizar_tarea_uc = ActualizarTareaUseCase(sql_repository)
         tarea_actualizada = actualizar_tarea_uc.ejecutar(id, tarea_dto)
 
         if tarea_actualizada is None:
@@ -82,7 +82,7 @@ def obtener_actualizar_eliminar_tarea(id):
 
 
     elif request.method == "DELETE":
-        eliminar_tarea_uc = EliminarTareaUseCase(json_repository)
+        eliminar_tarea_uc = EliminarTareaUseCase(sql_repository)
         eliminado = eliminar_tarea_uc.ejecutar(id)
 
         if not eliminado:
@@ -95,7 +95,7 @@ def obtener_actualizar_eliminar_tarea(id):
 
 
     ###GET ####
-    obtener_tarea_uc = ObtenerTareaUseCase(json_repository)
+    obtener_tarea_uc = ObtenerTareaUseCase(sql_repository)
     tarea = obtener_tarea_uc.ejecutar(id)
     if not tarea:
         res = {"mensaje": "No se encontro la tarea"}

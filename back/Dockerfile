@@ -5,11 +5,10 @@ WORKDIR /app
 
 COPY requirements.txt requirements.txt
 
-RUN pip --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app 
 
 
 
-
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "app:asgi_app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
