@@ -1,68 +1,29 @@
-import { useTareas } from '../hooks/useTareas'
 import Card from '../components/Card/Card'
+import Pagination from '../components/Pagination/Pagination'
+import ControlesBusqueda from '../components/ControlesBusqueda/ControlesBusqueda'
 import { useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useFiltroTareas } from '../hooks/useFiltroTareas'
 
 export default function Home() {
 
   
-  const [paginaActual, setPaginaActual] = useState(1)
-  const totalTargetasPorPagina = 9
+  const navigate = useNavigate();
 
-
-
-  const { tareas, loading, error, editarTarea, eliminar } = useTareas()
-  
-
-  const navigate = useNavigate()
-
-  const toggleTask = async (tarea) => {
-    await editarTarea(tarea.id, { completado: !tarea.completado })
-  }
-
-
-
-  const onDelete = async (tarea) => {
-
-    const confirmado = window.confirm(`¿Estás seguro de eliminar "${tarea.titulo}"?`)
-
-    if (!confirmado) return;
-
-    await eliminar(tarea.id)
-  }
-
-
-
-  const [busqueda, setBusqueda] = useState("")
-  const [filtroEstado, setFiltroEstado] = useState("todos")   // Todas, Completadas, pendientes.
-
-  const tareasFiltradas = tareas.filter(tarea => {
-
-
-    const coincidenciaBusqueda = tarea.titulo.toLowerCase().includes(busqueda.toLowerCase());
-
-
-    let coincidenciaFiltro = true
-
-    if (filtroEstado === "completados") coincidenciaFiltro = tarea.completado === true;
-    if (filtroEstado === "pendientes") coincidenciaFiltro = tarea.completado === false;
-
-      return coincidenciaBusqueda && coincidenciaFiltro
-
-  })
-
-
-  const indiceUltimaTarea = paginaActual * totalTargetasPorPagina
-  const indicePrimeraTarea = indiceUltimaTarea - totalTargetasPorPagina
-
-
-  const tareasPagina = tareasFiltradas.slice(indicePrimeraTarea, indiceUltimaTarea)
-
-  const totalPaginas = Math.ceil(tareasFiltradas.length / totalTargetasPorPagina)
-  
-  useEffect(() => {
-    setPaginaActual(1);
-  }, [busqueda, filtroEstado]);
+  const {
+    loading,
+    error,
+    busqueda,
+    setBusqueda,
+    filtroEstado,
+    setFiltroEstado,
+    tareasFiltradas,
+    tareasPagina,
+    paginaActual,
+    totalPaginas,
+    setPaginaActual,
+    toggleTask,
+    onDelete
+  } = useFiltroTareas();
   
   return (
 
@@ -79,35 +40,12 @@ export default function Home() {
 
       {!loading && !error && (
         <>
-          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
-
-            {/* Input de Búsqueda */}
-            <div className="relative flex-1 max-w-md">
-              <input
-                type="text"
-                placeholder="Buscar por título..."
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
-                className="w-full border-2 border-black p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-black"
-              />
-              {/* Icono de Lupa simple de SVG */}
-              <svg className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-            {/* Selector de Filtro */}
-            <div className="flex shrink-0">
-              <select
-                value={filtroEstado}
-                onChange={(e) => setFiltroEstado(e.target.value)}
-                className="cursor-pointer border-2 border-black bg-white p-3 font-semibold focus:outline-none focus:ring-2 focus:ring-black"
-              >
-                <option value="todos">Todas las Tareas</option>
-                <option value="pendientes">Pendientes</option>
-                <option value="completados">Completadas</option>
-              </select>
-            </div>
-          </div>
+          <ControlesBusqueda
+            busqueda={busqueda}
+            setBusqueda={setBusqueda}
+            filtroEstado={filtroEstado}
+            setFiltroEstado={setFiltroEstado}
+          />
 
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -132,20 +70,11 @@ export default function Home() {
           ))}
         </div>
       
-  <div className="mt-8 flex items-center justify-center gap-4">
-    
-    {paginaActual > 1 && <button className="rounded-s-sm border border-black bg-black px-3 py-2 font-medium text-white transition-colors hover:bg-white hover:text-black focus:z-10 focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-white focus:outline-none disabled:pointer-events-auto disabled:opacity-50 dark:border-black dark:bg-black dark:text-white dark:hover:bg-white dark:hover:text-black dark:focus:ring-offset-black"  onClick={() => setPaginaActual(paginaActual - 1)}>
-      Anterior
-    </button>}
-    
-    <p className="border-black bg-black px-3 py-2 font-medium text-white transition-colors hover:bg-white hover:text-black focus:z-10 focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-white focus:outline-none disabled:pointer-events-auto disabled:opacity-50 dark:border-black dark:bg-black dark:text-white dark:hover:bg-white dark:hover:text-black dark:focus:ring-offset-black">
-    Pagina {paginaActual} de {totalPaginas}
-    </p>
-    
-    {paginaActual < totalPaginas && <button className="rounded-e-sm border border-black bg-black px-3 py-2 font-medium text-white transition-colors hover:bg-white hover:text-black focus:z-10 focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-white focus:outline-none disabled:pointer-events-auto disabled:opacity-50 dark:border-black dark:bg-black dark:text-white dark:hover:bg-white dark:hover:text-black dark:focus:ring-offset-black" onClick={() => setPaginaActual(paginaActual + 1)} >
-    Siguiente
-    </button>}
-  </div>
+          <Pagination
+            paginaActual={paginaActual}
+            totalPaginas={totalPaginas}
+            setPaginaActual={setPaginaActual}
+          />
   
     </>
 
